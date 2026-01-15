@@ -1,13 +1,21 @@
+import { getOwnerFromScope } from './commonFuncs.js';
 import { managers, scope } from './allowedPackages.js';
 import fs from 'fs/promises';
 import path from "node:path";
 import chalk from 'chalk';
 import { execSync } from 'node:child_process';
+import degit from 'degit';
 
 async function cloneGitRepo(projectType, projectName) {
+    console.log('Cloning using git...');
+
     const currentDir = process.cwd();
     const destination = path.join(currentDir, projectName);
-    const requestedPackage = `${scope}/${projectType}`;
+
+    const owner = getOwnerFromScope(scope);
+    const repo = projectType;
+
+    const requestedPackage = `${owner}/${repo}`;
     const fullURL = `https://github.com/${requestedPackage}.git`
 
     console.log(`Writing in ${destination}...`);
@@ -15,6 +23,32 @@ async function cloneGitRepo(projectType, projectName) {
 
     await fs.mkdir(destination);
     execSync(`git clone --depth 1 ${fullURL} .`, { stdio: "inherit", cwd: destination });
+}
+
+async function downloadGitRepo(projectType, projectName) {
+    console.log('Downloading repository without git...');
+
+    const currentDir = process.cwd();
+    const destination = path.join(currentDir, projectName);
+
+    const owner = getOwnerFromScope(scope);
+    const repo = projectType;
+
+    await fs.mkdir(destination, { recursive: true });
+    console.log(`Writing in ${destination}...`);
+
+    const emitter = degit(`${owner}/${repo}`, {
+        cache: false,
+        force: true,
+        verbose: true,
+    });
+
+    try {
+        await emitter.clone(destination);
+        console.log(`Repository downloaded to successfully.`);
+    } catch {
+        console.log(chalk.red('Failed to download repository. Please check your internet connection and try again.'));
+    }
 }
 
 async function updatePackageJson(projectPath, projectType, projectName) {
@@ -105,12 +139,13 @@ export async function init(projectType, projectName, useGit, packageManager) {
         const currentDir = process.cwd();
         const destination = path.join(currentDir, projectName);
 
-        await cloneGitRepo(projectType, projectName);
-        console.log();
-
-        if (useGit === false) {
+        if (useGit) {
+            await cloneGitRepo(projectType, projectName);
             await removeGitFolder(destination);
+        } else {
+            await downloadGitRepo(projectType, projectName);
         }
+        console.log();
 
         await updatePackageJson(destination, projectType, projectName);
 
