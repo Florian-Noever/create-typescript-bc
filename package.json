@@ -1,10 +1,30 @@
 {
     "name": "create-typescript-bc",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Scaffold a TypeScript project with different frameworks for use as a ControlAddin in Business Central.",
     "license": "MIT",
     "author": "Florian Noever",
     "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Florian-Noever/create-typescript-bc"
+    },
+    "bugs": {
+        "url": "https://github.com/Florian-Noever/create-typescript-bc/issues"
+    },
+    "homepage": "https://github.com/Florian-Noever/create-typescript-bc",
+    "keywords": [
+        "javascript",
+        "typescript",
+        "scaffold",
+        "cli",
+        "template",
+        "generator",
+        "al",
+        "business-central",
+        "bc",
+        "control-addin"
+    ],
     "bin": {
         "create-typescript-bc": "./index.js"
     },
@@ -18,26 +38,9 @@
     "publishConfig": {
         "access": "public"
     },
-    "keywords": [
-        "javascript",
-        "typescript",
-        "scaffold",
-        "cli",
-        "template",
-        "generator",
-        "al",
-        "business-central",
-        "bc",
-        "control-addin"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Florian-Noever/create-typescript-bc"
+    "scripts": {
+        "test": "echo \"No tests specified\""
     },
-    "bugs": {
-        "url": "https://github.com/Florian-Noever/create-typescript-bc/issues"
-    },
-    "homepage": "https://github.com/Florian-Noever/create-typescript-bc",
     "dependencies": {
         "cac": "^6.7.14",
         "chalk": "^5.6.2",
