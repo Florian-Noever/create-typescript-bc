@@ -15,6 +15,9 @@
         "index.js",
         "utils/"
     ],
+    "publishConfig": {
+        "access": "public"
+    },
     "keywords": [
         "javascript",
         "typescript",
